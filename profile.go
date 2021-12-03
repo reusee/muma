@@ -17,7 +17,7 @@ func (_ Global) Profiles() ScriptFuncs {
 			if profile == nil {
 				return
 			}
-			f, err := os.Open(fmt.Sprintf("%s-profile-%v", name, time.Now()))
+			f, err := os.Create(fmt.Sprintf("%s-profile-%v", name, time.Now()))
 			ce(err)
 			defer f.Close()
 			ce(profile.WriteTo(f, 0))
@@ -29,7 +29,7 @@ func (_ Global) Profiles() ScriptFuncs {
 		"cpu_profile": func() {
 			if f == nil {
 				// start
-				f, err = os.Open(fmt.Sprintf("cpu-profile-%v", time.Now()))
+				f, err = os.Create(fmt.Sprintf("cpu-profile-%v", time.Now()))
 				ce(err)
 				pprof.StartCPUProfile(f)
 			} else {
