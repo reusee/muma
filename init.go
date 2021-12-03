@@ -19,6 +19,14 @@ func init() {
 		exeDir := filepath.Dir(exePath)
 		scriptPath := filepath.Join(exeDir, "muma.py")
 
+		scope := dscope.New(dscope.Methods(new(Global))...)
+		var fns ScriptFuncs
+		scope.Assign(&fns)
+		pyFuncs := make(starlark.StringDict)
+		for name, fn := range fns {
+			pyFuncs[name] = starlarkutil.MakeFunc(name, fn)
+		}
+
 		c := make(chan os.Signal, 1)
 		signal.Notify(c, syscall.SIGUSR2)
 		for {
@@ -27,14 +35,6 @@ func init() {
 			script, err := os.ReadFile(scriptPath)
 			if is(err, os.ErrNotExist) {
 				continue
-			}
-
-			scope := dscope.New(dscope.Methods(new(Global))...)
-			var fns ScriptFuncs
-			scope.Assign(&fns)
-			pyFuncs := make(starlark.StringDict)
-			for name, fn := range fns {
-				pyFuncs[name] = starlarkutil.MakeFunc(name, fn)
 			}
 
 			_, err = starlark.ExecFile(
