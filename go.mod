@@ -13,5 +13,5 @@ require (
 	github.com/hashicorp/golang-lru v0.5.4 // indirect
 	github.com/reusee/pr v0.0.0-20211003125556-3e6e9c7537ae // indirect
 	github.com/reusee/sb v0.0.0-20211013023636-c521ec7cac82 // indirect
-	golang.org/x/sys v0.0.0-20211020174200-9d6173849985 // indirect
+	golang.org/x/sys v0.1.0 // indirect
 )
